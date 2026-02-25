@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/audio/audio_ingest.schema.json",
+  "title": "AudioIngest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "sample_rate_hz", "channels", "chunk_b64", "is_last"],
+  "properties": {
+    "format": { "type": "string", "enum": ["pcm_s16le", "opus"] },
+    "sample_rate_hz": { "type": "integer", "enum": [8000, 16000, 24000, 48000] },
+    "channels": { "type": "integer", "enum": [1, 2] },
+    "chunk_b64": { "type": "string", "minLength": 1, "description": "base64-encoded audio bytes" },
+    "is_last": { "type": "boolean" },
+    "seq": { "type": "integer", "minimum": 0 },
+    "vad": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "speech_prob": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

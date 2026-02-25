@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/dms/dms_frame_ingest.schema.json",
+  "title": "DMSFrameIngest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["image_b64", "format"],
+  "properties": {
+    "image_b64": { "type": "string", "minLength": 1 },
+    "format": { "type": "string", "enum": ["jpg", "png"] },
+    "timestamp_ms": { "type": "integer", "minimum": 0 }
+  }
+}

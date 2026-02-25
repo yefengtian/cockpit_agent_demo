@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/agent/agent_assistant_message.schema.json",
+  "title": "AssistantMessage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["text", "output_modality"],
+  "properties": {
+    "text": { "type": "string", "minLength": 1 },
+    "output_modality": { "type": "string", "enum": ["voice", "screen", "both"] },
+    "should_tts": { "type": "boolean", "default": true }
+  }
+}

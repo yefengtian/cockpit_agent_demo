@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/nav/nav_mcp_tool.schema.json",
+  "title": "NavMCPTools",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tools"],
+  "properties": {
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "description", "input_schema", "output_schema"],
+        "properties": {
+          "name": { "type": "string", "enum": ["nav.route", "nav.poi"] },
+          "description": { "type": "string" },
+          "input_schema": { "type": "string" },
+          "output_schema": { "type": "string" }
+        }
+      }
+    }
+  }
+}

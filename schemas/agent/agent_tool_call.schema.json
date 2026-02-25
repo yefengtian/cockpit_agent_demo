@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/agent/agent_tool_call.schema.json",
+  "title": "AgentToolCall",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tool_name", "call_id", "arguments"],
+  "properties": {
+    "tool_name": { "type": "string", "enum": ["vehicle.control", "vehicle.get_state", "nav.route", "nav.poi"] },
+    "call_id": { "type": "string", "minLength": 6 },
+    "arguments": { "type": "object" },
+    "requires_confirmation": { "type": "boolean", "default": false },
+    "confirmation_prompt": { "type": "string" }
+  }
+}

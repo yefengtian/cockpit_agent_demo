@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/dms/dms_state.schema.json",
+  "title": "DMSState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["has_face", "blink_rate_per_min"],
+  "properties": {
+    "has_face": { "type": "boolean" },
+    "blink_rate_per_min": { "type": "number", "minimum": 0 },
+    "yawn_count_5min": { "type": "integer", "minimum": 0 },
+    "gaze_off_road_ms_10s": { "type": "integer", "minimum": 0 }
+  }
+}

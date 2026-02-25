@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/nav/nav_poi_request.schema.json",
+  "title": "NavPOIRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["center", "query"],
+  "properties": {
+    "center": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lat", "lon"],
+      "properties": { "lat": { "type": "number" }, "lon": { "type": "number" } }
+    },
+    "query": { "type": "string", "minLength": 1, "description": "e.g. 'charging station', 'Starbucks'" },
+    "radius_m": { "type": "integer", "minimum": 100, "maximum": 50000, "default": 5000 },
+    "limit": { "type": "integer", "minimum": 1, "maximum": 20, "default": 5 }
+  }
+}

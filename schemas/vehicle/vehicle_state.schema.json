@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/vehicle/vehicle_state.schema.json",
+  "title": "VehicleState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["speed_kph", "windows", "ac"],
+  "properties": {
+    "speed_kph": { "type": "number", "minimum": 0, "maximum": 300 },
+    "gear": { "type": "string", "enum": ["P", "R", "N", "D", "S"] },
+    "windows": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["FL", "FR", "RL", "RR"],
+      "properties": {
+        "FL": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "FR": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "RL": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "RR": { "type": "integer", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "ac": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ac_on", "temp_c", "fan_level", "mode", "recirc_on"],
+      "properties": {
+        "ac_on": { "type": "boolean" },
+        "temp_c": { "type": "number", "minimum": 16, "maximum": 30 },
+        "fan_level": { "type": "integer", "minimum": 1, "maximum": 7 },
+        "mode": { "type": "string", "enum": ["face", "feet", "defrost", "auto"] },
+        "recirc_on": { "type": "boolean" }
+      }
+    }
+  }
+}

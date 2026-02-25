@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/common/envelope.schema.json",
+  "title": "MessageEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "payload"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["message_id", "timestamp_ms", "source", "type", "session_id", "trace"],
+      "properties": {
+        "message_id": { "type": "string", "minLength": 8 },
+        "timestamp_ms": { "type": "integer", "minimum": 0 },
+        "source": {
+          "type": "string",
+          "enum": ["audio", "agent", "vehicle", "dms", "nav", "ui", "test"]
+        },
+        "type": { "type": "string", "minLength": 1 },
+        "session_id": { "type": "string", "minLength": 1 },
+        "trace": { "$ref": "schemas/common/trace.schema.json" }
+      }
+    },
+    "payload": { "type": "object" }
+  }
+}

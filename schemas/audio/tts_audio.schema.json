@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/audio/tts_audio.schema.json",
+  "title": "TTSAudio",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["audio_b64", "format", "sample_rate_hz"],
+  "properties": {
+    "audio_b64": { "type": "string", "minLength": 1 },
+    "format": { "type": "string", "enum": ["wav", "pcm_s16le"] },
+    "sample_rate_hz": { "type": "integer" }
+  }
+}

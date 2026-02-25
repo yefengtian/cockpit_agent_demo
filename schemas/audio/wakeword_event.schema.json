@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/audio/wakeword_event.schema.json",
+  "title": "WakewordEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["keyword", "score"],
+  "properties": {
+    "keyword": { "type": "string" },
+    "score": { "type": "number", "minimum": 0, "maximum": 1 }
+  }
+}

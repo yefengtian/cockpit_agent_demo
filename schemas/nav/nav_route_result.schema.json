@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/nav/nav_route_result.schema.json",
+  "title": "NavRouteResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["distance_m", "duration_s", "summary", "polyline"],
+  "properties": {
+    "distance_m": { "type": "number", "minimum": 0 },
+    "duration_s": { "type": "number", "minimum": 0 },
+    "summary": { "type": "string" },
+    "polyline": { "type": "string", "description": "encoded polyline" },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["instruction", "distance_m"],
+        "properties": {
+          "instruction": { "type": "string" },
+          "distance_m": { "type": "number", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

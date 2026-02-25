@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/agent/agent_user_utterance.schema.json",
+  "title": "AgentUserUtterance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["text", "input_modality"],
+  "properties": {
+    "text": { "type": "string", "minLength": 1 },
+    "input_modality": { "type": "string", "enum": ["voice", "touch", "api"] },
+    "language": { "type": "string", "default": "zh-CN" }
+  }
+}

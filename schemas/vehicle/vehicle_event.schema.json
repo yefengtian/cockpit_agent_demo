@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/vehicle/vehicle_event.schema.json",
+  "title": "VehicleEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event", "state"],
+  "properties": {
+    "event": { "type": "string", "enum": ["state_changed", "command_rejected"] },
+    "state": { "$ref": "schemas/vehicle/vehicle_state.schema.json" },
+    "error": { "$ref": "schemas/common/error.schema.json" }
+  }
+}

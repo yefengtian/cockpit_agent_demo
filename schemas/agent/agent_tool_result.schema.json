@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/agent/agent_tool_result.schema.json",
+  "title": "AgentToolResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["call_id", "tool_name", "ok"],
+  "properties": {
+    "call_id": { "type": "string", "minLength": 6 },
+    "tool_name": { "type": "string" },
+    "ok": { "type": "boolean" },
+    "result": { "type": "object" },
+    "error": { "$ref": "schemas/common/error.schema.json" }
+  }
+}

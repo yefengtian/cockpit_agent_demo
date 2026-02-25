@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/dms/dms_event.schema.json",
+  "title": "DMSEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_type", "severity", "duration_ms"],
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "enum": ["DROWSY_EYES_CLOSED", "YAWN", "DISTRACTION_GAZE_OFF_ROAD", "NO_FACE", "PHONE_USE_SUSPECT"]
+    },
+    "severity": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "duration_ms": { "type": "integer", "minimum": 0 },
+    "metrics": { "type": "object", "description": "EAR, MAR, headpose, gaze, etc." }
+  }
+}

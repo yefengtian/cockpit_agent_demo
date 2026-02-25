@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/agent/agent_session_state.schema.json",
+  "title": "AgentSessionState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["turn_id", "pending_confirmation", "last_vehicle_state"],
+  "properties": {
+    "turn_id": { "type": "integer", "minimum": 0 },
+    "pending_confirmation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "call_id": { "type": "string" },
+        "tool_call": { "$ref": "schemas/agent/agent_tool_call.schema.json" }
+      }
+    },
+    "last_vehicle_state": { "$ref": "schemas/vehicle/vehicle_state.schema.json" },
+    "last_nav": { "type": "object" }
+  }
+}

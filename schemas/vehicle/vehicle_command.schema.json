@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/vehicle/vehicle_command.schema.json",
+  "title": "VehicleCommand",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["command", "args"],
+  "properties": {
+    "command": {
+      "type": "string",
+      "enum": [
+        "set_window",
+        "set_ac",
+        "set_fan_speed",
+        "set_ac_mode",
+        "set_recirc",
+        "get_state"
+      ]
+    },
+    "args": { "type": "object" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "command": { "const": "set_window" } } },
+      "then": {
+        "properties": {
+          "args": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["position", "percent"],
+            "properties": {
+              "position": { "type": "string", "enum": ["FL", "FR", "RL", "RR"] },
+              "percent": { "type": "integer", "minimum": 0, "maximum": 100 }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "command": { "const": "set_ac" } } },
+      "then": {
+        "properties": {
+          "args": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["temp_c", "ac_on"],
+            "properties": {
+              "temp_c": { "type": "number", "minimum": 16, "maximum": 30 },
+              "ac_on": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "command": { "const": "set_fan_speed" } } },
+      "then": {
+        "properties": {
+          "args": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["level"],
+            "properties": { "level": { "type": "integer", "minimum": 1, "maximum": 7 } }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "command": { "const": "set_ac_mode" } } },
+      "then": {
+        "properties": {
+          "args": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["mode"],
+            "properties": { "mode": { "type": "string", "enum": ["face", "feet", "defrost", "auto"] } }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "command": { "const": "set_recirc" } } },
+      "then": {
+        "properties": {
+          "args": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["recirc_on"],
+            "properties": { "recirc_on": { "type": "boolean" } }
+          }
+        }
+      }
+    }
+  ]
+}

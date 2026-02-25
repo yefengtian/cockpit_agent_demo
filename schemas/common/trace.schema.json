@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/common/trace.schema.json",
+  "title": "TraceContext",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["trace_id", "span_id"],
+  "properties": {
+    "trace_id": { "type": "string", "minLength": 8 },
+    "span_id": { "type": "string", "minLength": 8 },
+    "parent_span_id": { "type": "string" },
+    "tags": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

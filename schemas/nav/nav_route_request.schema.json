@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/nav/nav_route_request.schema.json",
+  "title": "NavRouteRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["origin", "destination"],
+  "properties": {
+    "origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lat", "lon"],
+      "properties": { "lat": { "type": "number" }, "lon": { "type": "number" } }
+    },
+    "destination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lat", "lon"],
+      "properties": { "lat": { "type": "number" }, "lon": { "type": "number" } }
+    },
+    "avoid": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["highway", "toll", "ferry"] },
+      "default": []
+    },
+    "mode": { "type": "string", "enum": ["driving"], "default": "driving" }
+  }
+}
