@@ -44,7 +44,7 @@ def chat(req: dict):
 
     if tool_name.startswith("vehicle."):
         cmd_payload = tool_call["arguments"]
-
+        print("!!!!!!!!!!!!!!!!![agent->vehicle] cmd_payload=", cmd_payload, flush=True)
         try:
             r = requests.post(
                 f"{VEHICLE_URL}/command",
