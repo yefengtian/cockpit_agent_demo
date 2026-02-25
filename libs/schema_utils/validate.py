@@ -47,6 +47,8 @@ def _validate_agent_utterance(obj: Dict[str, Any]) -> None:
     _ensure(obj.get("input_modality") in {"voice", "touch", "api"}, "invalid payload.input_modality")
     if "language" in obj:
         _ensure(isinstance(obj["language"], str), "payload.language must be string")
+    if "speaker_role" in obj:
+        _ensure(obj["speaker_role"] in {"driver", "passenger", "unknown"}, "invalid payload.speaker_role")
 
 
 def _validate_vehicle_command(obj: Dict[str, Any]) -> None:

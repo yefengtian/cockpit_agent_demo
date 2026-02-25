@@ -82,3 +82,6 @@ ipython_config.py
 
 # pyright
 .pyright/
+
+# Local secrets / overrides
+config/app_config.local.json

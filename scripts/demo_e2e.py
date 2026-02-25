@@ -48,11 +48,11 @@ def main() -> None:
         _wait_health("http://127.0.0.1:8003/health")
         _wait_health("http://127.0.0.1:8005/health")
 
-        req1 = _envelope("ui", "agent.user_utterance", {"text": "把副驾窗开到30%", "input_modality": "voice"})
+        req1 = _envelope("ui", "agent.user_utterance", {"text": "把副驾窗开到30%", "input_modality": "voice", "speaker_role": "driver", "language": "zh-CN"})
         r1 = requests.post("http://127.0.0.1:8002/chat", json=req1, timeout=5)
         print("agent chat(window):", json.dumps(r1.json(), ensure_ascii=False))
 
-        req2 = _envelope("ui", "agent.user_utterance", {"text": "最近的星巴克", "input_modality": "voice"})
+        req2 = _envelope("ui", "agent.user_utterance", {"text": "最近的星巴克", "input_modality": "voice", "speaker_role": "passenger", "language": "zh-CN"})
         r2 = requests.post("http://127.0.0.1:8002/chat", json=req2, timeout=5)
         print("agent chat(nav):", json.dumps(r2.json(), ensure_ascii=False))
 

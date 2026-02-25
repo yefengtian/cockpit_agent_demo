@@ -3,14 +3,16 @@ import subprocess
 import sys
 import time
 
+from libs.config import get_setting
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SERVICES = [
-    ("audio_service",   "services.audio_service.app:app",   int(os.getenv("AUDIO_SERVICE_PORT", "8001"))),
-    ("agent_service",   "services.agent_service.app:app",   int(os.getenv("AGENT_SERVICE_PORT", "8002"))),
-    ("vehicle_service", "services.vehicle_service.app:app", int(os.getenv("VEHICLE_SERVICE_PORT", "8003"))),
-    ("dms_service",     "services.dms_service.app:app",     int(os.getenv("DMS_SERVICE_PORT", "8004"))),
-    ("nav_service",     "services.nav_service.app:app",     int(os.getenv("NAV_SERVICE_PORT", "8005"))),
+    ("audio_service",   "services.audio_service.app:app",   int(get_setting("services.audio_port", os.getenv("AUDIO_SERVICE_PORT", "8001")))),
+    ("agent_service",   "services.agent_service.app:app",   int(get_setting("services.agent_port", os.getenv("AGENT_SERVICE_PORT", "8002")))),
+    ("vehicle_service", "services.vehicle_service.app:app", int(get_setting("services.vehicle_port", os.getenv("VEHICLE_SERVICE_PORT", "8003")))),
+    ("dms_service",     "services.dms_service.app:app",     int(get_setting("services.dms_port", os.getenv("DMS_SERVICE_PORT", "8004")))),
+    ("nav_service",     "services.nav_service.app:app",     int(get_setting("services.nav_port", os.getenv("NAV_SERVICE_PORT", "8005")))),
 ]
 
 def main():

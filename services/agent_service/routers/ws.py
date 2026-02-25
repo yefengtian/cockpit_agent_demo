@@ -25,6 +25,8 @@ async def ws_agent(ws: WebSocket):
                 session_id=meta["session_id"],
                 trace=meta.get("trace"),
                 text=msg["payload"]["text"],
+                speaker=msg["payload"].get("speaker_role"),
+                language=msg["payload"].get("language"),
             )
             await ws.send_text(json.dumps(out, ensure_ascii=False))
     except WebSocketDisconnect:

@@ -42,8 +42,14 @@ def _agent_out(session_id: str, trace: Optional[dict], text: str) -> dict:
     return out
 
 
-def execute_text_plan(session_id: str, trace: Optional[dict], text: str) -> dict:
-    plan = simple_plan(text)
+def execute_text_plan(
+    session_id: str,
+    trace: Optional[dict],
+    text: str,
+    speaker: Optional[str] = None,
+    language: Optional[str] = None,
+) -> dict:
+    plan = simple_plan(text=text, speaker=speaker, language=language)
     if plan["type"] == "message":
         out = env("agent", "agent.out", session_id, trace, plan["message"])
         validate_or_raise("schemas/common/envelope.schema.json", out)

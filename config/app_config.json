@@ -1,0 +1,21 @@
+{
+  "services": {
+    "audio_port": 8001,
+    "agent_port": 8002,
+    "vehicle_port": 8003,
+    "dms_port": 8004,
+    "nav_port": 8005
+  },
+  "llm": {
+    "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+    "api_key": "",
+    "model": "doubao-seed-1-8-251228",
+    "timeout_s": 12
+  },
+  "nav": {
+    "provider": "stub",
+    "amap_mcp_command": "",
+    "amap_mcp_env": {},
+    "amap_mcp_timeout_s": 8
+  }
+}

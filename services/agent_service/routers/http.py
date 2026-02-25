@@ -18,8 +18,11 @@ def chat(req: dict):
         return {"ok": False, "error": f"bad request: {e}"}
 
     meta = req["meta"]
+    payload = req["payload"]
     return execute_text_plan(
         session_id=meta["session_id"],
         trace=meta.get("trace"),
-        text=req["payload"]["text"],
+        text=payload["text"],
+        speaker=payload.get("speaker_role"),
+        language=payload.get("language"),
     )

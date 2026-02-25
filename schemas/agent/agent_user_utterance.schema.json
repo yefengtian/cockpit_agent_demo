@@ -8,6 +8,7 @@
   "properties": {
     "text": { "type": "string", "minLength": 1 },
     "input_modality": { "type": "string", "enum": ["voice", "touch", "api"] },
-    "language": { "type": "string", "default": "zh-CN" }
+    "language": { "type": "string", "default": "zh-CN" },
+    "speaker_role": { "type": "string", "enum": ["driver", "passenger", "unknown"], "default": "unknown" }
   }
 }
