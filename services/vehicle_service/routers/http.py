@@ -1,6 +1,7 @@
 from typing import Optional
 from fastapi import APIRouter
 from libs.log.tracing import now_ms, mk_trace, new_id
+from libs.schema_utils.validate import SchemaValidationError, validate_or_raise
 from ..simulator.state import STATE
 
 router = APIRouter()
@@ -24,19 +25,27 @@ def health():
 
 @router.get("/state")
 def get_state():
-    return envelope("vehicle", "vehicle.state", "demo", None, {
+    out = envelope("vehicle", "vehicle.state", "demo", None, {
         "speed_kph": STATE.speed_kph,
         "gear": STATE.gear,
         "windows": STATE.windows,
         "ac": STATE.ac
     })
+    validate_or_raise("schemas/common/envelope.schema.json", out)
+    return out
 
 @router.post("/command")
 def command(req: dict):
-    meta = req.get("meta", {})
-    session_id = meta.get("session_id", "demo")
+    try:
+        validate_or_raise("schemas/common/envelope.schema.json", req)
+        cmd = (req.get("payload") or {})
+        validate_or_raise("schemas/vehicle/vehicle_command.schema.json", cmd)
+    except SchemaValidationError as e:
+        return {"ok": False, "error": f"bad request: {e}"}
+
+    meta = req["meta"]
+    session_id = meta["session_id"]
     trace = meta.get("trace")
-    cmd = (req.get("payload") or {})
     c = cmd.get("command")
     args = cmd.get("args") or {}
 
@@ -89,4 +98,6 @@ def command(req: dict):
     if err:
         event_payload["error"] = err
 
-    return envelope("vehicle", "vehicle.event", session_id, trace, event_payload)
+    out = envelope("vehicle", "vehicle.event", session_id, trace, event_payload)
+    validate_or_raise("schemas/common/envelope.schema.json", out)
+    return out

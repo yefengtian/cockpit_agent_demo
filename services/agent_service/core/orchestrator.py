@@ -10,7 +10,7 @@ def simple_plan(text: str) -> dict:
     t = text.strip()
 
     # window: "副驾窗开到30%"
-    m = re.search(r"(副驾|副驾驶|右前).*(窗).*(\d{1,3})\s*%", t)
+    m = re.search(r"(副驾|副驾驶|右前).*?(窗).*?(\d{1,3})\s*[%％]", t)
     if m:
         pct = int(m.group(3))
         pct = max(0, min(100, pct))
