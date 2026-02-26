@@ -1,0 +1,15 @@
+{
+  "name": "cockpit_agent_demo",
+  "version": "1.0.0",
+  "description": "Python multi-service demo for an intelligent cockpit assistant.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@amap/amap-maps-mcp-server": "^0.0.8"
+  }
+}

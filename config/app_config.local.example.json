@@ -4,10 +4,10 @@
   },
   "nav": {
     "provider": "amap_mcp",
-    "amap_mcp_command": "npx -y @amap/amap-maps-mcp-server",
-    "amap_mcp_env": {
-      "AMAP_MAPS_API_KEY": "<YOUR_AMAP_KEY>"
-    },
-    "amap_mcp_timeout_s": 8
+    "amap_mcp_command": "./node_modules/.bin/mcp-amap",
+    "amap_mcp_env": { "AMAP_MAPS_API_KEY": "<YOUR_AMAP_KEY>" },
+    "amap_mcp_transport": "ndjson",
+    "amap_mcp_timeout_s": 8,
+    "amap_mcp_total_timeout_s": 20
   }
 }

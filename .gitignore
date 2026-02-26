@@ -85,3 +85,6 @@ ipython_config.py
 
 # Local secrets / overrides
 config/app_config.local.json
+
+# Node local deps
+node_modules/

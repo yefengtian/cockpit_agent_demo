@@ -168,19 +168,21 @@ Set in config file:
 {
   "nav": {
     "provider": "amap_mcp",
-    "amap_mcp_command": "npx -y @amap/amap-maps-mcp-server",
+    "amap_mcp_command": "npx -y -p @amap/amap-maps-mcp-server mcp-amap",
     "amap_mcp_env": {
       "AMAP_MAPS_API_KEY": "<YOUR_AMAP_KEY>"
     },
-    "amap_mcp_timeout_s": 8
+    "amap_mcp_timeout_s": 8,
+    "amap_mcp_transport": "auto"
   }
 }
 ```
 
 Then start services and call `/poi` or `/route` through `agent_service`.
 
-This follows AMap official Node.js I/O MCP pattern: run
-`npx -y @amap/amap-maps-mcp-server` and pass key via `AMAP_MAPS_API_KEY`.
+This follows your verified AMap MCP smoke setup:
+`npx -y -p @amap/amap-maps-mcp-server mcp-amap` with `AMAP_MAPS_API_KEY`.
+`amap_mcp_transport` supports `auto` (recommended), `ndjson`, and `content_length`.
 
 Implementation notes:
 - File: `services/nav_service/providers/amap_mcp.py`

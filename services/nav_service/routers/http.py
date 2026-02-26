@@ -41,6 +41,8 @@ def debug_provider():
     return {
         "provider_mode": _provider_mode(),
         "amap_mcp_command_configured": bool(AMAP.command),
+        "amap_mcp_command": AMAP.command,
+        "amap_mcp_transport": getattr(AMAP, "transport", "unknown"),
         "amap_maps_api_key_configured": bool(amap_key.strip()),
         "last_provider_used": LAST_PROVIDER_USED,
         "last_mcp_error": LAST_MCP_ERROR,

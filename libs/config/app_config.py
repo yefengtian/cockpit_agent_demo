@@ -46,9 +46,11 @@ def load_app_config() -> Dict[str, Any]:
         },
         "nav": {
             "provider": "stub",
-            "amap_mcp_command": "",
+            "amap_mcp_command": "npx -y -p @amap/amap-maps-mcp-server mcp-amap",
             "amap_mcp_env": {},
             "amap_mcp_timeout_s": 8,
+            "amap_mcp_transport": "auto",
+            "amap_mcp_total_timeout_s": 20,
         },
     }
 
