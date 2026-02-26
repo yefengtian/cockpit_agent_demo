@@ -1,0 +1,106 @@
+# Cockpit Agent POST test commands
+# Copy and run each curl directly in terminal.
+
+# 1) Agent - driver, front-right window
+curl --max-time 25 -sS -X POST http://127.0.0.1:8002/chat \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000001","timestamp_ms":1772000000000,"source":"ui","type":"agent.user_utterance","session_id":"demo","trace":{"trace_id":"trace_post_000001","span_id":"span_post_000001","tags":{}}},
+    "payload":{"text":"把副驾窗开到30%","input_modality":"voice","speaker_role":"driver","language":"zh-CN"}
+  }'
+
+# 2) Agent - driver, left-rear window
+curl --max-time 25 -sS -X POST http://127.0.0.1:8002/chat \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000002","timestamp_ms":1772000000100,"source":"ui","type":"agent.user_utterance","session_id":"demo","trace":{"trace_id":"trace_post_000002","span_id":"span_post_000002","tags":{}}},
+    "payload":{"text":"把左后窗开到30%","input_modality":"voice","speaker_role":"driver","language":"zh-CN"}
+  }'
+
+# 3) Agent - driver, right-rear window
+curl --max-time 25 -sS -X POST http://127.0.0.1:8002/chat \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000003","timestamp_ms":1772000000200,"source":"ui","type":"agent.user_utterance","session_id":"demo","trace":{"trace_id":"trace_post_000003","span_id":"span_post_000003","tags":{}}},
+    "payload":{"text":"把右后窗开到40%","input_modality":"voice","speaker_role":"driver","language":"zh-CN"}
+  }'
+
+# 4) Agent - temperature control
+curl --max-time 25 -sS -X POST http://127.0.0.1:8002/chat \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000004","timestamp_ms":1772000000300,"source":"ui","type":"agent.user_utterance","session_id":"demo","trace":{"trace_id":"trace_post_000004","span_id":"span_post_000004","tags":{}}},
+    "payload":{"text":"温度调到22","input_modality":"voice","speaker_role":"driver","language":"zh-CN"}
+  }'
+
+# 5) Agent - passenger POI query
+curl --max-time 25 -sS -X POST http://127.0.0.1:8002/chat \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000005","timestamp_ms":1772000000400,"source":"ui","type":"agent.user_utterance","session_id":"demo","trace":{"trace_id":"trace_post_000005","span_id":"span_post_000005","tags":{}}},
+    "payload":{"text":"帮我找最近的星巴克","input_modality":"voice","speaker_role":"passenger","language":"zh-CN"}
+  }'
+
+# 6) Agent - passenger generic chat
+curl --max-time 25 -sS -X POST http://127.0.0.1:8002/chat \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000006","timestamp_ms":1772000000500,"source":"ui","type":"agent.user_utterance","session_id":"demo","trace":{"trace_id":"trace_post_000006","span_id":"span_post_000006","tags":{}}},
+    "payload":{"text":"你好，介绍一下你会什么","input_modality":"voice","speaker_role":"passenger","language":"zh-CN"}
+  }'
+
+# 7) Vehicle - set window FR 30
+curl --max-time 25 -sS -X POST http://127.0.0.1:8003/command \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000007","timestamp_ms":1772000000600,"source":"agent","type":"vehicle.command","session_id":"demo","trace":{"trace_id":"trace_post_000007","span_id":"span_post_000007","tags":{}}},
+    "payload":{"command":"set_window","args":{"position":"FR","percent":30}}
+  }'
+
+# 8) Vehicle - invalid command args (negative test)
+curl --max-time 25 -sS -X POST http://127.0.0.1:8003/command \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000008","timestamp_ms":1772000000700,"source":"agent","type":"vehicle.command","session_id":"demo","trace":{"trace_id":"trace_post_000008","span_id":"span_post_000008","tags":{}}},
+    "payload":{"command":"set_window","args":{"position":"XX","percent":30}}
+  }'
+
+# 9) Nav - POI search
+curl --max-time 25 -sS -X POST http://127.0.0.1:8005/poi \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000009","timestamp_ms":1772000000800,"source":"agent","type":"nav.poi.request","session_id":"demo","trace":{"trace_id":"trace_post_000009","span_id":"span_post_000009","tags":{}}},
+    "payload":{"center":{"lat":31.23,"lon":121.47},"query":"星巴克","radius_m":5000,"limit":3}
+  }'
+
+# 10) Nav - route planning
+curl --max-time 25 -sS -X POST http://127.0.0.1:8005/route \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000010","timestamp_ms":1772000000900,"source":"agent","type":"nav.route.request","session_id":"demo","trace":{"trace_id":"trace_post_000010","span_id":"span_post_000010","tags":{}}},
+    "payload":{"origin":{"lat":39.90923,"lon":116.397428},"destination":{"lat":39.90816,"lon":116.43383},"mode":"driving","avoid":[]}
+  }'
+
+# 11) Nav - invalid poi request (negative test)
+curl --max-time 25 -sS -X POST http://127.0.0.1:8005/poi \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000011","timestamp_ms":1772000001000,"source":"agent","type":"nav.poi.request","session_id":"demo","trace":{"trace_id":"trace_post_000011","span_id":"span_post_000011","tags":{}}},
+    "payload":{"center":{"lat":31.23,"lon":121.47}}
+  }'
+
+# 12) Audio - TTS
+curl --max-time 25 -sS -X POST http://127.0.0.1:8001/tts \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000012","timestamp_ms":1772000001100,"source":"agent","type":"audio.tts.request","session_id":"demo","trace":{"trace_id":"trace_post_000012","span_id":"span_post_000012","tags":{}}},
+    "payload":{"text":"你好，这是TTS测试"}
+  }'
+
+# 13) DMS - frame ingest
+curl --max-time 25 -sS -X POST http://127.0.0.1:8004/frame \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "meta":{"message_id":"m_post_000013","timestamp_ms":1772000001200,"source":"ui","type":"dms.frame.ingest","session_id":"demo","trace":{"trace_id":"trace_post_000013","span_id":"span_post_000013","tags":{}}},
+    "payload":{"frame_b64":"AA==","camera_id":"driver_cam"}
+  }'

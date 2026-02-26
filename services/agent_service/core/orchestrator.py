@@ -28,15 +28,20 @@ def _mk_msg(text: str) -> Dict[str, Any]:
 
 def _rule_fallback(text: str) -> Dict[str, Any]:
     t = text.strip()
-    m = re.search(r"(副驾|副驾驶|右前).*?(窗).*?(\d{1,3})\s*[%％]", t)
+    m = re.search(r"(主驾|左前|副驾|副驾驶|右前|左后|右后).*?(窗).*?(\d{1,3})\s*[%％]", t)
     if m:
+        seat = m.group(1)
         pct = max(0, min(100, int(m.group(3))))
-        return _mk_tool("vehicle.control", {"command": "set_window", "args": {"position": "FR", "percent": pct}})
-
-    m = re.search(r"(主驾|左前).*?(窗).*?(\d{1,3})\s*[%％]", t)
-    if m:
-        pct = max(0, min(100, int(m.group(3))))
-        return _mk_tool("vehicle.control", {"command": "set_window", "args": {"position": "FL", "percent": pct}})
+        pos_map = {
+            "主驾": "FL",
+            "左前": "FL",
+            "副驾": "FR",
+            "副驾驶": "FR",
+            "右前": "FR",
+            "左后": "RL",
+            "右后": "RR",
+        }
+        return _mk_tool("vehicle.control", {"command": "set_window", "args": {"position": pos_map.get(seat, "FR"), "percent": pct}})
 
     m = re.search(r"(温度).*(\d{2})", t)
     if m:
@@ -49,6 +54,57 @@ def _rule_fallback(text: str) -> Dict[str, Any]:
         return _mk_tool("nav.poi", {"center": {"lat": 31.23, "lon": 121.47}, "query": "充电站", "radius_m": 5000, "limit": 5})
 
     return _mk_msg("我在。你可以直接说你的需求，比如调空调、开车窗、找附近地点或规划路线。")
+
+
+def _extract_vehicle_constraints(text: str) -> Dict[str, Any]:
+    t = str(text or "").strip()
+    out: Dict[str, Any] = {}
+
+    m = re.search(r"(主驾|左前|副驾|副驾驶|右前|左后|右后).*?(窗).*?(\d{1,3})\s*[%％]?", t)
+    if m:
+        seat = m.group(1)
+        pct = max(0, min(100, int(m.group(3))))
+        pos_map = {
+            "主驾": "FL",
+            "左前": "FL",
+            "副驾": "FR",
+            "副驾驶": "FR",
+            "右前": "FR",
+            "左后": "RL",
+            "右后": "RR",
+        }
+        out["window"] = {"position": pos_map.get(seat, "FR"), "percent": pct}
+
+    m = re.search(r"(?:空调)?(?:温度)?[^0-9]{0,6}(\d{2})\s*(?:度|℃)?", t)
+    if m:
+        out["ac"] = {"temp_c": max(16.0, min(30.0, float(m.group(1))))}
+    return out
+
+
+def _apply_vehicle_constraints(plan: Dict[str, Any], constraints: Dict[str, Any]) -> Dict[str, Any]:
+    if plan.get("type") != "tool_call":
+        return plan
+    tool_call = plan.get("tool_call") or {}
+    if tool_call.get("tool_name") != "vehicle.control":
+        return plan
+    arguments = tool_call.get("arguments") or {}
+    cmd = str(arguments.get("command", "")).strip().lower()
+    args = arguments.get("args")
+    if not isinstance(args, dict):
+        args = {}
+
+    if isinstance(constraints.get("window"), dict):
+        w = constraints["window"]
+        arguments["command"] = "set_window"
+        arguments["args"] = {"position": w["position"], "percent": w["percent"]}
+        tool_call["arguments"] = arguments
+    elif isinstance(constraints.get("ac"), dict):
+        ac = constraints["ac"]
+        arguments["command"] = "set_ac"
+        ac_on = args.get("ac_on")
+        arguments["args"] = {"temp_c": ac["temp_c"], "ac_on": bool(ac_on) if isinstance(ac_on, bool) else True}
+        tool_call["arguments"] = arguments
+    return plan
 
 
 def _normalize_llm_plan(raw: Dict[str, Any]) -> Dict[str, Any]:
@@ -143,7 +199,8 @@ def _normalize_llm_plan(raw: Dict[str, Any]) -> Dict[str, Any]:
             return {"command": "set_recirc", "args": {"recirc_on": bool(ro)}}
         if cmd == "get_state":
             return {"command": "get_state", "args": {}}
-        return {"command": "get_state", "args": {}}
+        # Keep invalid command explicit to avoid false-success behavior.
+        return {"command": "__invalid__", "args": {}}
 
     if raw.get("type") == "message":
         m = raw.get("message") or {}
@@ -168,6 +225,8 @@ def simple_plan(text: str, speaker: Optional[str] = None, language: Optional[str
     try:
         messages = build_planner_messages(t, speaker=speaker, language=language)
         raw = _LLM.chat_json(messages=messages, temperature=0.1)
-        return _normalize_llm_plan(raw)
+        plan = _normalize_llm_plan(raw)
+        constraints = _extract_vehicle_constraints(t)
+        return _apply_vehicle_constraints(plan, constraints)
     except LLMError:
         return _rule_fallback(t)
